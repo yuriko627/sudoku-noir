@@ -1,8 +1,13 @@
-struct Board <let N: u32> {
+// Board size is NxN
+global N: u32 = 9;
+// Sub-board size is MxM
+global M: u32 = 3;
+
+struct Board {
     values: [[u32; N]; N],
 }
 
-fn permutation_one_to_n<let N: u32>(values: [u32; N]) {
+fn permutation_one_to_n(values: [u32; N]) {
     let sorted = values.sort();
     let mut expected = [0; N];
     for i in 0..N {
@@ -11,7 +16,7 @@ fn permutation_one_to_n<let N: u32>(values: [u32; N]) {
     assert(sorted == expected, f"{sorted} != {expected}");
 }
 
-fn verify<let N: u32, let M: u32>(init: Board<N>, solution: Board<N>) {
+fn verify(init: Board, solution: Board) {
     let mut board = Board{values: [[0; N]; N]};
     for row in 0..N {
         for col in 0..N {
@@ -52,17 +57,7 @@ fn verify<let N: u32, let M: u32>(init: Board<N>, solution: Board<N>) {
     }
 }
 
-// fn main(solution: Board<4>) {
-//     let init = [
-//         [2, 0, 3, 0],
-//         [0, 3, 0, 2],
-//         [3, 0, 4, 0],
-//         [1, 4, 0, 0],
-//     ];
-//     verify::<4, 2>(Board{values: init}, solution);
-// }
-
-fn main(solution: Board<9>) {
+fn main(solution: Board) {
     let init = [
         [2, 0, 5, 0, 0, 9, 0, 0, 4],
         [0, 0, 0, 0, 0, 0, 3, 0, 7],
@@ -74,17 +69,8 @@ fn main(solution: Board<9>) {
         [6, 0, 8, 0, 0, 0, 0, 0, 0],
         [1, 0, 0, 2, 0, 0, 7, 0, 8],
     ];
-    verify::<9, 3>(Board{values: init}, solution);
+    verify(Board{values: init}, solution);
 }
-
-// // Example 4,2
-// [solution]
-// values = [
-// ["2", "1", "3", "4"],
-// ["4", "3", "1", "2"],
-// ["3", "2", "4", "1"],
-// ["1", "4", "2", "3"]
-// ]
 
 // // Example 9,3
 // [solution]
@@ -103,22 +89,32 @@ fn main(solution: Board<9>) {
 
 #[test]
 fn test_permutation_one_to_n() {
-    permutation_one_to_n::<4>([2, 3, 1, 4]);
+    permutation_one_to_n([2, 3, 1, 4, 6, 5, 9, 7, 8]);
 }
 
 #[test]
 fn test_verify() {
     let init = [
-        [2, 0, 3, 0],
-        [0, 3, 0, 2],
-        [3, 0, 4, 0],
-        [1, 4, 0, 0],
+        [2, 0, 5, 0, 0, 9, 0, 0, 4],
+        [0, 0, 0, 0, 0, 0, 3, 0, 7],
+        [7, 0, 0, 8, 5, 6, 0, 1, 0],
+        [4, 5, 0, 7, 0, 0, 0, 0, 0],
+        [0, 0, 9, 0, 0, 0, 1, 0, 0],
+        [0, 0, 0, 0, 0, 2, 0, 8, 5],
+        [0, 2, 0, 4, 1, 8, 0, 0, 6],
+        [6, 0, 8, 0, 0, 0, 0, 0, 0],
+        [1, 0, 0, 2, 0, 0, 7, 0, 8],
     ];
     let solution = [
-        [2, 1, 3, 4],
-        [4, 3, 1, 2],
-        [3, 2, 4, 1],
-        [1, 4, 2, 3],
+        [2, 1, 5, 3, 7, 9, 8, 6, 4],
+        [9, 8, 6, 1, 2, 4, 3, 5, 7],
+        [7, 3, 4, 8, 5, 6, 2, 1, 9],
+        [4, 5, 2, 7, 8, 1, 6, 9, 3],
+        [8, 6, 9, 5, 4, 3, 1, 7, 2],
+        [3, 7, 1, 6, 9, 2, 4, 8, 5],
+        [5, 2, 7, 4, 1, 8, 9, 3, 6],
+        [6, 4, 8, 9, 3, 7, 5, 2, 1],
+        [1, 9, 3, 2, 6, 5, 7, 4, 8],
     ];
-    verify::<4, 2>(Board{values: init}, Board{values: solution});
+    verify(Board{values: init}, Board{values: solution});
 }
