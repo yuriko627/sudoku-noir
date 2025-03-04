@@ -7,54 +7,25 @@ struct Board {
     values: [[u32; N]; N],
 }
 
+// NOTE: Noir doesn't have `core::array::from_fn`.  You can instead initialize an array with 0 values and then overwrite it wity your desired values.
+
 fn permutation_one_to_n(values: [u32; N]) {
-    let sorted = values.sort();
-    let mut expected = [0; N];
-    for i in 0..N {
-        expected[i] = i+1;
-    }
-    assert(sorted == expected, f"{sorted} != {expected}");
+    assert(0 == 1, "Remove me and fill this function");
 }
 
 fn verify(init: Board, solution: Board) {
-    let mut board = Board{values: [[0; N]; N]};
-    for row in 0..N {
-        for col in 0..N {
-            if init.values[row][col] != 0 {
-                board.values[row][col] = init.values[row][col];
-            } else {
-                board.values[row][col] = solution.values[row][col];
-            }
-        }
-    }
+    assert(0 == 1, "Remove me and fill this function");
+
+    // TODO: Create a board from init and solution
+
     // Rows
-    for row in 0..N {
-        let mut values = [0; N];
-        for col in 0..N {
-            values[col] = board.values[row][col];
-        }
-        permutation_one_to_n(values);
-    }
+    // TODO: Verify rows
+
     // Columns
-    for col in 0..N {
-        let mut values = [0; N];
-        for row in 0..N {
-            values[row] = board.values[row][col];
-        }
-        permutation_one_to_n(values);
-    }
+    // TODO: Verify columns
+
     // Squares
-    for square_y in 0..N / M {
-        for square_x in 0..N / M {
-            let row = square_y * M;
-            let col = square_x * M;
-            let mut values = [0; N];
-            for i in 0..N {
-                values[i] = board.values[row + (i / M)][col + (i % M)];
-            }
-            permutation_one_to_n(values);
-        }
-    }
+    // TODO: Verify squares
 }
 
 fn main(solution: Board) {
@@ -88,12 +59,23 @@ fn main(solution: Board) {
 
 
 #[test]
-fn test_permutation_one_to_n() {
+fn test_permutation_one_to_n_positive() {
     permutation_one_to_n([2, 3, 1, 4, 6, 5, 9, 7, 8]);
+    permutation_one_to_n([4, 7, 6, 1, 9, 5, 3, 2, 8]);
+}
+
+#[test(should_fail)]
+fn test_permutation_one_to_n_negative_1() {
+    permutation_one_to_n([2, 3, 1, 4, 6, 5, 9, 7, 2]);
+}
+
+#[test(should_fail)]
+fn test_permutation_one_to_n_negative_2() {
+    permutation_one_to_n([2, 3, 1, 4, 6, 5, 9, 7, 10]);
 }
 
 #[test]
-fn test_verify() {
+fn test_verify_positive() {
     let init = [
         [2, 0, 5, 0, 0, 9, 0, 0, 4],
         [0, 0, 0, 0, 0, 0, 3, 0, 7],
@@ -108,6 +90,87 @@ fn test_verify() {
     let solution = [
         [2, 1, 5, 3, 7, 9, 8, 6, 4],
         [9, 8, 6, 1, 2, 4, 3, 5, 7],
+        [7, 3, 4, 8, 5, 6, 2, 1, 9],
+        [4, 5, 2, 7, 8, 1, 6, 9, 3],
+        [8, 6, 9, 5, 4, 3, 1, 7, 2],
+        [3, 7, 1, 6, 9, 2, 4, 8, 5],
+        [5, 2, 7, 4, 1, 8, 9, 3, 6],
+        [6, 4, 8, 9, 3, 7, 5, 2, 1],
+        [1, 9, 3, 2, 6, 5, 7, 4, 8],
+    ];
+    verify(Board{values: init}, Board{values: solution});
+}
+
+#[test(should_fail)]
+fn test_verify_negative_1() {
+    let init = [
+        [2, 0, 5, 0, 0, 9, 0, 0, 4],
+        [0, 0, 0, 0, 0, 0, 3, 0, 7],
+        [7, 0, 0, 8, 5, 6, 0, 1, 0],
+        [4, 5, 0, 7, 0, 0, 0, 0, 0],
+        [0, 0, 9, 0, 0, 0, 1, 0, 0],
+        [0, 0, 0, 0, 0, 2, 0, 8, 5],
+        [0, 2, 0, 4, 1, 8, 0, 0, 6],
+        [6, 0, 8, 0, 0, 0, 0, 0, 0],
+        [1, 0, 0, 2, 0, 0, 7, 0, 8],
+    ];
+    let solution = [
+        [2, 2, 5, 3, 7, 9, 8, 6, 4],
+        [9, 8, 6, 1, 2, 4, 3, 5, 7],
+        [7, 3, 4, 8, 5, 6, 2, 1, 9],
+        [4, 5, 2, 7, 8, 1, 6, 9, 3],
+        [8, 6, 9, 5, 4, 3, 1, 7, 2],
+        [3, 7, 1, 6, 9, 2, 4, 8, 5],
+        [5, 2, 7, 4, 1, 8, 9, 3, 6],
+        [6, 4, 8, 9, 3, 7, 5, 2, 1],
+        [1, 9, 3, 2, 6, 5, 7, 4, 8],
+    ];
+    verify(Board{values: init}, Board{values: solution});
+}
+
+#[test(should_fail)]
+fn test_verify_negative_2() {
+    let init = [
+        [2, 0, 5, 0, 0, 9, 0, 0, 4],
+        [0, 0, 0, 0, 0, 0, 3, 0, 7],
+        [7, 0, 0, 8, 5, 6, 0, 1, 0],
+        [4, 5, 0, 7, 0, 0, 0, 0, 0],
+        [0, 0, 9, 0, 0, 0, 1, 0, 0],
+        [0, 0, 0, 0, 0, 2, 0, 8, 5],
+        [0, 2, 0, 4, 1, 8, 0, 0, 6],
+        [6, 0, 8, 0, 0, 0, 0, 0, 0],
+        [1, 0, 0, 2, 0, 0, 7, 0, 8],
+    ];
+    let solution = [
+        [2, 1, 5, 3, 7, 9, 8, 6, 4],
+        [2, 8, 6, 1, 2, 4, 3, 5, 7],
+        [7, 3, 4, 8, 5, 6, 2, 1, 9],
+        [4, 5, 2, 7, 8, 1, 6, 9, 3],
+        [8, 6, 9, 5, 4, 3, 1, 7, 2],
+        [3, 7, 1, 6, 9, 2, 4, 8, 5],
+        [5, 2, 7, 4, 1, 8, 9, 3, 6],
+        [6, 4, 8, 9, 3, 7, 5, 2, 1],
+        [1, 9, 3, 2, 6, 5, 7, 4, 8],
+    ];
+    verify(Board{values: init}, Board{values: solution});
+}
+
+#[test(should_fail)]
+fn test_verify_negative_3() {
+    let init = [
+        [2, 0, 5, 0, 0, 9, 0, 0, 4],
+        [0, 0, 0, 0, 0, 0, 3, 0, 7],
+        [7, 0, 0, 8, 5, 6, 0, 1, 0],
+        [4, 5, 0, 7, 0, 0, 0, 0, 0],
+        [0, 0, 9, 0, 0, 0, 1, 0, 0],
+        [0, 0, 0, 0, 0, 2, 0, 8, 5],
+        [0, 2, 0, 4, 1, 8, 0, 0, 6],
+        [6, 0, 8, 0, 0, 0, 0, 0, 0],
+        [1, 0, 0, 2, 0, 0, 7, 0, 8],
+    ];
+    let solution = [
+        [2, 1, 5, 3, 7, 9, 8, 6, 4],
+        [9, 2, 6, 1, 2, 4, 3, 5, 7],
         [7, 3, 4, 8, 5, 6, 2, 1, 9],
         [4, 5, 2, 7, 8, 1, 6, 9, 3],
         [8, 6, 9, 5, 4, 3, 1, 7, 2],
