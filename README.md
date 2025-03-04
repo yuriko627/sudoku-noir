@@ -93,7 +93,7 @@ Noir also includes some constructions that don't exist in Rust
 
 Let's build a sudoku verifier in Noir!
 
-1. Review the pure rust implementation of a sudoku verifier
+1. Review the pure rust implementation of a sudoku verifier `./sudoku_rs/src/main.rs`
     - Try to understand why it works
 2. In the Noir implementation, complete the function `permutation_one_to_n`
     - On success, the tests that start with `test_permutation_one_to_n` should pass
