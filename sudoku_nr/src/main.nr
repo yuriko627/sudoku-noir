@@ -10,11 +10,11 @@ struct Board {
 // NOTE: Noir doesn't have `core::array::from_fn`.  You can instead initialize an array with 0 values and then overwrite it wity your desired values.
 
 fn permutation_one_to_n(values: [u32; N]) {
-    assert(0 == 1, "Remove me and fill this function");
+    assert(0 == 1, "(a) Remove me and fill this function");
 }
 
 fn verify(init: Board, solution: Board) {
-    assert(0 == 1, "Remove me and fill this function");
+    assert(0 == 1, "(b) Remove me and fill this function");
 
     // TODO: Create a board from init and solution
 
