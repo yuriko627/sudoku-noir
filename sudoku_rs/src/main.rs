@@ -10,6 +10,7 @@ fn permutation_one_to_n(values: [u32; N]) {
 }
 
 pub fn verify(init: &Board, solution: &Board) {
+    // We replace the zero values in the initial board with the solution values.
     let board: Board = core::array::from_fn(|row| {
         core::array::from_fn(|col| {
             if init[row][col] != 0 {
@@ -32,9 +33,10 @@ pub fn verify(init: &Board, solution: &Board) {
     // Squares
     for square_y in 0..N / M {
         for square_x in 0..N / M {
-            let row = square_y * M;
-            let col = square_x * M;
-            let values = core::array::from_fn(|i| board[row + (i / M)][col + (i % M)]);
+            let row_offset = square_y * M;
+            let col_offset = square_x * M;
+            let values =
+                core::array::from_fn(|i| board[row_offset + (i / M)][col_offset + (i % M)]);
             permutation_one_to_n(values);
         }
     }
