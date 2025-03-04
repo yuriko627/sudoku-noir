@@ -1,6 +1,10 @@
-# 2025-02-28 ZK Circuits workshop: Noir
+# 2025-02-28 ZK Circuits workshop with Noir
 
 # Intro
+
+See the file zk-circuits-slides.pdf for an introduction into zkSNARKS and zk circuits.
+
+# Noir Intro
 
 Noir is a high level programming language to write zk circuits.
 
@@ -93,8 +97,10 @@ Noir also includes some constructions that don't exist in Rust
 
 Let's build a sudoku verifier in Noir!
 
-1. Review the pure rust implementation of a sudoku verifier `./sudoku_rs/src/main.rs`
+0. If you're familiar with Rust and want an extra challenge, finish the implementation of a sudoku verifier in `./sudoku_rs_todo` and skip the next step once you're done.
+1. Review the pure Rust implementation of a sudoku verifier `./sudoku_rs/src/main.rs`
     - Try to understand why it works
+    - For those not familiar with Rust, `array::from_fn` allows initializing an array with a function that takes the index of the array and returns the value.
 2. In the Noir implementation, complete the function `permutation_one_to_n`
     - On success, the tests that start with `test_permutation_one_to_n` should pass
         - `nargo test test_permutation_one_to_n`
@@ -103,3 +109,18 @@ Let's build a sudoku verifier in Noir!
         - `nargo test test_verify`
 4. Optional: Measure the proving time and rewrite the circuit in a more efficient way
 
+There are two sets of tests: positive and negative:
+- positive tests are expected to pass.  They allow us to check the correctness of our circuit: we make sure that valid solutions satisfy the circuit constraints.
+- negative tests are expected to fail.  They allow us to check the soundness of our circuit: we make sure that the circuit rejects invalid solutions to our problem.
+
+After the exercise is complete we can do the full flow with a particular input (which will be part of the circuit definition) by filling the `Prover.toml` file with the solution and then running the same steps as the Quickstart section.
+
+## Acknowledgements
+
+- @ChihChengLiang for user-testing the exercise
+- The [Community Privacy Residency (2025)](https://community-privacy.github.io/) and its [sponsors](https://community-privacy.github.io/partners/) for funding this workshop
+
+## License
+
+- All markdown text and slides in this repository documents are licensed under [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/?ref=chooser-v1)
+- All code in this repository is licensed under [GPLv3](https://www.gnu.org/licenses/gpl-3.0.en.html#license-text)
