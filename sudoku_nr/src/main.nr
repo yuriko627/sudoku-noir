@@ -10,22 +10,63 @@ struct Board {
 // NOTE: Noir doesn't have `core::array::from_fn`.  You can instead initialize an array with 0 values and then overwrite it wity your desired values.
 
 fn permutation_one_to_n(values: [u32; N]) {
-    assert(0 == 1, "(a) Remove me and fill this function");
+    let mut values = values;
+    let sorted = values.sort();
+    for i in 0..N {
+        assert(sorted[i] == i as u32 + 1, "Invalid permutation");
+    }
 }
 
 fn verify(init: Board, solution: Board) {
-    assert(0 == 1, "(b) Remove me and fill this function");
-
     // TODO: Create a board from init and solution
+    let mut board = Board { values: [[0; N]; N] };
+
+    for row in 0..N {
+        for col in 0..N {
+            if init.values[row][col] != 0 {
+                board.values[row][col] = init.values[row][col];
+            } else {
+                board.values[row][col] = solution.values[row][col];
+            }
+        }
+    }
 
     // Rows
     // TODO: Verify rows
+    for row in 0..N {
+        let mut row_values = board.values[row];
+        permutation_one_to_n(row_values);
+    }
 
     // Columns
     // TODO: Verify columns
+    for col in 0..N {
+        let mut col_values = [0, 0, 0, 0, 0, 0, 0, 0, 0];
+        for row in 0..N {
+            col_values[row] = board.values[row][col];
+        }
+        permutation_one_to_n(col_values)
+    }
 
     // Squares
     // TODO: Verify squares
+    let mut sq_values = [0, 0, 0, 0, 0, 0, 0, 0, 0];
+    for square_y in 0..M {
+        for square_x in 0..M {
+            let mut row_offset = square_y * M;
+            let mut col_offset = square_x * M;
+
+            println(f"row_offset: {row_offset}, col_offset: {col_offset}");
+
+            for i in 0..N {
+                let mut row_index = row_offset + i / M;
+                let mut col_index = col_offset + i % M;
+                println(f"row_index: {row_index}, col_index: {col_index}");
+                sq_values[i] = board.values[row_index][col_index];
+            }
+            permutation_one_to_n(sq_values);
+        }
+    }
 }
 
 fn main(solution: Board) {
@@ -40,7 +81,7 @@ fn main(solution: Board) {
         [6, 0, 8, 0, 0, 0, 0, 0, 0],
         [1, 0, 0, 2, 0, 0, 7, 0, 8],
     ];
-    verify(Board{values: init}, solution);
+    verify(Board { values: init }, solution);
 }
 
 // // Example 9,3
@@ -56,7 +97,6 @@ fn main(solution: Board) {
 // ["6", "4", "8", "9", "3", "7", "5", "2", "1"],
 // ["1", "9", "3", "2", "6", "5", "7", "4", "8"],
 // ]
-
 
 #[test]
 fn test_permutation_one_to_n_positive() {
@@ -98,7 +138,7 @@ fn test_verify_positive() {
         [6, 4, 8, 9, 3, 7, 5, 2, 1],
         [1, 9, 3, 2, 6, 5, 7, 4, 8],
     ];
-    verify(Board{values: init}, Board{values: solution});
+    verify(Board { values: init }, Board { values: solution });
 }
 
 #[test(should_fail)]
@@ -125,7 +165,7 @@ fn test_verify_negative_1() {
         [6, 4, 8, 9, 3, 7, 5, 2, 1],
         [1, 9, 3, 2, 6, 5, 7, 4, 8],
     ];
-    verify(Board{values: init}, Board{values: solution});
+    verify(Board { values: init }, Board { values: solution });
 }
 
 #[test(should_fail)]
@@ -152,7 +192,7 @@ fn test_verify_negative_2() {
         [6, 4, 8, 9, 3, 7, 5, 2, 1],
         [1, 9, 3, 2, 6, 5, 7, 4, 8],
     ];
-    verify(Board{values: init}, Board{values: solution});
+    verify(Board { values: init }, Board { values: solution });
 }
 
 #[test(should_fail)]
@@ -179,5 +219,5 @@ fn test_verify_negative_3() {
         [3, 4, 5, 6, 7, 8, 9, 1, 2],
         [2, 3, 4, 5, 6, 7, 8, 9, 1],
     ];
-    verify(Board{values: init}, Board{values: solution});
+    verify(Board { values: init }, Board { values: solution });
 }
